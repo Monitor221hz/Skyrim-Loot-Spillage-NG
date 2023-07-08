@@ -193,6 +193,31 @@ namespace Util
 
     };
 
+    struct Numbers
+    {
+        static float GenerateRandomFloat(float afMin, float afMax)
+        {
+            std::random_device rd;
+
+            std::mt19937 engine{rd()};
+
+            std::uniform_real_distribution<float> dist(afMin, afMax);
+
+            return dist(engine);
+        }
+
+        static uint32_t GenerateRandomInt(uint32_t afMin, uint32_t afMax)
+        {
+            std::random_device rd;
+
+            std::mt19937 engine{rd()};
+
+            std::uniform_int_distribution<uint32_t> dist(afMin, afMax);
+
+            return dist(engine);
+        }
+    };
+
 }
 
 namespace MathUtil

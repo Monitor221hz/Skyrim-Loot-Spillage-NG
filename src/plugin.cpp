@@ -1,6 +1,6 @@
 #include "log.h"
-
-
+#include "event.h"
+#include "settings.h"
 void OnDataLoaded()
 {
    
@@ -10,7 +10,8 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 {
 	switch (a_msg->type) {
 	case SKSE::MessagingInterface::kDataLoaded:
-        
+        LootSpillage::DeathEventHandler::GetSingleton()->Install(); 
+		LootSpillage::Settings::Load(); 
 		break;
 	case SKSE::MessagingInterface::kPostLoad:
 		break;
