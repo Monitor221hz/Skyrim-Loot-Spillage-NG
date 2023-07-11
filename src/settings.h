@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SimpleIni.h"
-
+using namespace RE; 
 namespace LootSpillage
 {
     class Settings
@@ -20,6 +20,19 @@ namespace LootSpillage
             bool DropWeapons = false; 
 
             bool DropOther = false; 
+
+        };
+
+        struct Shaders
+        {
+            float Duration = 60.0f; 
+            float FallOff = 1.0f; 
+
+            uint32_t BaseColor = 0xffffff;
+            uint32_t WeaponColor = 0xfa6502; 
+            uint32_t ArmorColor = 0x02e5fa;
+            uint32_t ConsumableColor = 0x02fa8b;
+            uint32_t ValuableColor = 0xfad502;
 
         };
 
@@ -47,6 +60,16 @@ namespace LootSpillage
             DropOptions.DropWeapons  = ini.GetBoolValue("Drops", "DropWeapons", false);  
             DropOptions.DropOther = ini.GetBoolValue("Drops", "DropOther", false);
 
+            ShaderOptions.Duration = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxDuration", 60.0)); 
+            ShaderOptions.FallOff = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxFallOff", 1.0)); 
+            
+            ShaderOptions.BaseColor = ini.GetLongValue("Shaders", "BaseColor", 0xffffff);
+            ShaderOptions.ArmorColor = ini.GetLongValue("Shaders", "ArmorColor", 0x02e5fa);
+            ShaderOptions.WeaponColor = ini.GetLongValue("Shaders", "WeaponColor", 0xfa6502);
+            ShaderOptions.ConsumableColor = ini.GetLongValue("Shaders", "ConsumableColor", 0x02fa8b);
+            ShaderOptions.ValuableColor = ini.GetLongValue("Shaders", "ValuableColor", 0xfad502);
+            
+
             SKSE::log::info("DropOptions | DropAll: {} | DropArmor: {} | DropWeapons: {} | DropOther {}", DropOptions.DropAll, DropOptions.DropArmor, DropOptions.DropWeapons, DropOptions.DropOther); 
         }
 
@@ -59,11 +82,24 @@ namespace LootSpillage
 
         [[nodiscard]] static bool ShouldDropOther() { return DropOptions.DropOther; }
 
+        [[nodiscard]] static float GetShaderDuration() { return ShaderOptions.Duration; }
 
+        [[nodiscard]] static float GetShaderFallOff() { return ShaderOptions.FallOff; }
+
+        [[nodiscard]] static Color GetBaseShaderColor() { return Color(ShaderOptions.BaseColor); }
+
+        [[nodiscard]] static Color GetArmorShaderColor() { return Color(ShaderOptions.ArmorColor); }
+
+        [[nodiscard]] static Color GetWeaponShaderColor() { return Color(ShaderOptions.WeaponColor); }
+
+        [[nodiscard]] static Color GetConsumableShaderColor() { return Color(ShaderOptions.ConsumableColor); }
+
+        [[nodiscard]] static Color GetValuableShaderColor() { return Color(ShaderOptions.ValuableColor); }
 
         private: 
 
         static inline DroppedLoot DropOptions; 
+        static inline Shaders ShaderOptions; 
 
     };   
 }

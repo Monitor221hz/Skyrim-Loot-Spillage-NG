@@ -6,4 +6,5 @@ set(headers ${headers}
     src/settings.h
     src/event.h
     src/loot.h
+    src/shaders.h
 )

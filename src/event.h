@@ -1,5 +1,6 @@
 #pragma once 
 #include "loot.h"
+#include "shaders.h"
 #include "util.h"
 using namespace RE; 
 namespace LootSpillage
@@ -24,4 +25,6 @@ namespace LootSpillage
          virtual RE::BSEventNotifyControl ProcessEvent(const TESDeathEvent *a_event, RE::BSTEventSource<TESDeathEvent> *a_eventSource) override;
 
     };
+
+
 }

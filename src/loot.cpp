@@ -18,10 +18,12 @@ namespace LootSpillage
         NiPoint3 angle = actor->GetAngle(); 
         for(auto const& [key, val] : inventory)
         {
-            SKSE::log::info("Dropping item {} with count {} from actor {}", key->GetName(), val.first, actor->GetActorBase()->GetName()); 
+             
             DropLoot(actor, key, val);      
             
         }
+        //testing hazards
+        
     }
 
     bool LootHandler::CanDrop(TESBoundObject *loot)
@@ -34,12 +36,11 @@ namespace LootSpillage
 
             case FormType::Armor:
             return Settings::ShouldDropArmor(); 
-
-            default:
-            return Settings::ShouldDropOther(); 
         }
-        return false;
+        return Settings::ShouldDropOther(); 
     }
+
+    
 
 
     
@@ -47,8 +48,10 @@ namespace LootSpillage
     {
         using Count = std::int32_t;
         using InventoryDropMap = std::map<TESBoundObject*, std::pair<Count, std::vector<ObjectRefHandle>>>;
-        if (!CanDrop(loot)) return; 
 
+
+        if (!CanDrop(loot)) return; 
+        if (inventoryData.first < 1) return; 
         NiPoint3 position = actor->GetPosition();
         NiPoint3 angle = actor->GetAngle();
         
@@ -71,5 +74,16 @@ namespace LootSpillage
 
         std::pair<Count, std::vector<ObjectRefHandle>> pair(inventoryData.first, arr); 
         actor->GetDroppedInventory().emplace(loot, pair);
+        //artobj  = 0xaa01
+        
+        // auto *obj = FormUtil::Form::GetFormFromMod("LootSpillage.esp", 0x5900)->As<BGSHazard>();
+        SKSE::log::info("Dropping item {} with count {} from actor {}", loot->GetName(), inventoryData.first, actor->GetActorBase()->GetName());
+        auto* refr = handle.get().get(); 
+        LootShaders::AddLootReference(refr); 
+        // FormUtil::Reference::PlaceAtReference(refr, obj, false);
+        LootShaders::QueueLootShader(refr);
+
+        // AttachMarker(actor, handle);
     }
+
 }

@@ -1,6 +1,7 @@
 #pragma once 
 #include "settings.h"
 #include "util.h"
+#include "shaders.h"
 using namespace RE;
 namespace LootSpillage
 {
@@ -8,6 +9,8 @@ namespace LootSpillage
     {
 
         public: 
+
+       
 
         static void DropInventory(Actor* actor); 
 
@@ -17,6 +20,12 @@ namespace LootSpillage
 
         static void DropLoot(Actor *actor, TESBoundObject *loot, const std::pair<int32_t, std::unique_ptr<InventoryEntryData>> &inventoryData);
 
+        
+
+         
+
+        
+        
         
 
     };

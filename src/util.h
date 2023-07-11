@@ -171,7 +171,7 @@ namespace Util
             std::vector<float> floatNumbers; 
             for(auto str : stringVector)
             {
-                float num = atof(str.c_str());
+                float num = static_cast<float>(atof(str.c_str()));
                 floatNumbers.push_back(num);
             }
             return floatNumbers;
@@ -392,6 +392,15 @@ namespace FormUtil
 
 
     };
+    struct Reference
+    {
+        public: 
+        static ObjectRefHandle PlaceAtReference(TESObjectREFR* refr, TESBoundObject* boundObject, bool forcePersist)
+        {
+            return TESDataHandler::GetSingleton()->CreateReferenceAtLocation(boundObject, refr->GetPosition(), refr->GetAngle(), refr->GetParentCell(), refr->GetWorldspace(), nullptr, nullptr, ObjectRefHandle(),forcePersist,true); 
+        }
+
+    };
 }
 namespace NifUtil
 {
@@ -511,6 +520,18 @@ namespace NifUtil
                     }
             return true;
         }
+    };
+
+    struct Effects
+    {
+        public:
+        static BSTempEffectParticle* Spawn(TESObjectCELL* a_cell, float a_lifetime, const char* a_modelName, const NiPoint3& a_rotation, const NiPoint3& a_position, float a_scale, std::uint32_t a_flags, NiAVObject* a_target)
+		{
+			using func_t = BSTempEffectParticle* (*)(TESObjectCELL*, float, const char*, const NiPoint3&, const NiPoint3&, float, std::uint32_t, NiAVObject*);
+			REL::Relocation<func_t> func{ RELOCATION_ID(29218, 30071) };
+			return func(a_cell, a_lifetime, a_modelName, a_rotation, a_position, a_scale, a_flags, a_target);
+		}
+
     };
 
    

@@ -1,6 +1,8 @@
 #include "log.h"
 #include "event.h"
 #include "settings.h"
+#include "shaders.h"
+#include "hook.h"
 void OnDataLoaded()
 {
    
@@ -12,14 +14,20 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 	case SKSE::MessagingInterface::kDataLoaded:
         LootSpillage::DeathEventHandler::GetSingleton()->Install(); 
 		LootSpillage::Settings::Load(); 
+		LootSpillage::LootShaders::Load(); 
+		LootSpillage::LootShaders::Configure(); 
 		break;
 	case SKSE::MessagingInterface::kPostLoad:
 		break;
 	case SKSE::MessagingInterface::kPreLoadGame:
 		break;
 	case SKSE::MessagingInterface::kPostLoadGame:
+		LootSpillage::Settings::Load(); 
+		LootSpillage::LootShaders::Configure(); 
         break;
 	case SKSE::MessagingInterface::kNewGame:
+		
+		LootSpillage::LootShaders::Configure(); 
 		break;
 	}
 }
@@ -33,6 +41,8 @@ SKSEPluginLoad(const SKSE::LoadInterface *skse) {
 	if (!messaging->RegisterListener("SKSE", MessageHandler)) {
 		return false;
 	}
+
+	
 
 	
     return true;
