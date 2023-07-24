@@ -27,7 +27,7 @@ namespace LootSpillage
         // if (!refr->Is3DLoaded()) return;
         ReadLocker locker(dataLock); 
         auto* baseObject = refr->GetBaseObject(); 
-        SKSE::log::info("Shader applied to object {} of type {}", baseObject->GetName(), baseObject->GetFormType()); 
+        
 
         TESEffectShader* shader; 
 
@@ -42,22 +42,23 @@ namespace LootSpillage
                 shader = ArmorShader; 
                 break;
             case FormType::Weapon:
-                shader = WeaponShader; 
+                shader = WeaponShader;
+                break; 
             case FormType::KeyMaster:
                 shader = ValuableShader; 
                 break;
-            
-            
             default:
             shader = BaseShader; 
             
         }
         if (baseObject->IsGold() || baseObject->IsSoulGem()) shader = ValuableShader; 
         
-        
+       
          
         // shader = WeaponShader; 
-        refr->InstantiateHitShader(shader, Duration, nullptr, false, false); 
+        auto* effect = refr->ApplyEffectShader(shader, Duration, nullptr, false, false);
+    //    SKSE::log::info("Shader applied to object {} of type {} | Edge Color {}", baseObject->GetName(), baseObject->GetFormType(), shader->data.edgeColor.ToHex());  
+        
     }
     void LootShaders::Configure()
     {
@@ -87,7 +88,7 @@ namespace LootSpillage
     void LootShaders::ApplyDelayedShader(TESObjectREFR *refr)
     {
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         ApplyLootShader(refr); 
     }
@@ -95,9 +96,38 @@ namespace LootSpillage
     {
 
         shader->data.edgeEffectFallOff = fallOff; 
-        shader->data.edgeColor = color; 
-        shader->data.colorKey1 = color; 
-        shader->data.colorKey2 = color; 
-        shader->data.colorKey3 = color; 
+        // color.alpha = 1; 
+        // SKSE::log::info("Shader {}", shader->GetFormEditorID()); 
+        // SKSE::log::info("Color Key 1 {}",shader->data.colorKey1.ToHex());
+        // SKSE::log::info("Color Key 2 {}", shader->data.colorKey2.ToHex());
+        // SKSE::log::info("Color Key 3 {}", shader->data.colorKey3.ToHex());
+        // SKSE::log::info("Edge color {}", shader->data.edgeColor.ToHex()); 
+        // SKSE::log::info("Fill Color Key 1 {}",shader->data.fillTextureEffectColorKey1.ToHex());
+        // SKSE::log::info("Fill Color Key 2 {}", shader->data.fillTextureEffectColorKey2.ToHex());
+        // SKSE::log::info("Fill Color Key 3 {}", shader->data.fillTextureEffectColorKey3.ToHex());
+        auto& edgeColor = shader->data.edgeColor;
+        edgeColor.red = 0;
+        edgeColor.blue = 0; 
+        edgeColor.green = 0; 
+        // shader->data.colorKey1 = color; 
+        // shader->data.colorKey2 = color; 
+        // shader->data.colorKey3 = color; 
+
+        // SKSE::log::info("Color Key 1 {}",shader->data.colorKey1.ToHex());
+        // SKSE::log::info("Color Key 2 {}", shader->data.colorKey2.ToHex());
+        // SKSE::log::info("Color Key 3 {}", shader->data.colorKey3.ToHex());
+        // SKSE::log::info("Edge color {}", shader->data.edgeColor.ToHex());
+
+        shader->SaveObjectBound();  
+        // shader->data.fillTextureEffectColorKey1 = color; 
+        // shader->data.fillTextureEffectColorKey2 = color; 
+        // shader->data.fillTextureEffectColorKey3 = color; 
+
+        // shader->data.colorKey1ColorAlpha = 100.0;
+        // shader->data.colorKey2ColorAlpha = 100.0; 
+        // shader->data.colorKey3ColorAlpha = 100.0;  
+
+
+        
     }
 }

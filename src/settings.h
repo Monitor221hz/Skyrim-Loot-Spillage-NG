@@ -1,6 +1,8 @@
 #pragma once
 
 #include "SimpleIni.h"
+
+
 using namespace RE; 
 namespace LootSpillage
 {
@@ -63,11 +65,11 @@ namespace LootSpillage
             ShaderOptions.Duration = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxDuration", 60.0)); 
             ShaderOptions.FallOff = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxFallOff", 1.0)); 
             
-            ShaderOptions.BaseColor = ini.GetLongValue("Shaders", "BaseColor", 0xffffff);
-            ShaderOptions.ArmorColor = ini.GetLongValue("Shaders", "ArmorColor", 0x02e5fa);
-            ShaderOptions.WeaponColor = ini.GetLongValue("Shaders", "WeaponColor", 0xfa6502);
-            ShaderOptions.ConsumableColor = ini.GetLongValue("Shaders", "ConsumableColor", 0x02fa8b);
-            ShaderOptions.ValuableColor = ini.GetLongValue("Shaders", "ValuableColor", 0xfad502);
+            // ShaderOptions.BaseColor = ini.GetLongValue("Shaders", "BaseColor", 0xffffff);
+            // ShaderOptions.ArmorColor = ini.GetLongValue("Shaders", "ArmorColor", 0x02e5fa);
+            // ShaderOptions.WeaponColor = ini.GetLongValue("Shaders", "WeaponColor", 0xfa6502);
+            // ShaderOptions.ConsumableColor = ini.GetLongValue("Shaders", "ConsumableColor", 0x02fa8b);
+            // ShaderOptions.ValuableColor = ini.GetLongValue("Shaders", "ValuableColor", 0xfad502);
             
 
             SKSE::log::info("DropOptions | DropAll: {} | DropArmor: {} | DropWeapons: {} | DropOther {}", DropOptions.DropAll, DropOptions.DropArmor, DropOptions.DropWeapons, DropOptions.DropOther); 
@@ -100,6 +102,15 @@ namespace LootSpillage
 
         static inline DroppedLoot DropOptions; 
         static inline Shaders ShaderOptions; 
+// BaseColor = 0xffffff
 
+// ArmorColor = 0x7602fa
+// ;cc2302
+// ;3244a8
+// WeaponColor = 0xffffff
+
+// ConsumableColor = 0x4ee004
+
+// ValuableColor = 0xfad502
     };   
 }

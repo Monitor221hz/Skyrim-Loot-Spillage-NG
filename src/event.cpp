@@ -13,7 +13,7 @@ namespace LootSpillage
         if (ref->GetFormType() != FormType::ActorCharacter || !ref->Is3DLoaded()) return Result::kContinue; 
         auto* actor = ref->As<Actor>(); 
         if (actor->IsEssential()) return Result::kContinue; 
-        SKSE::log::info("Actor {} dead", actor->GetActorBase()->GetName()); 
+        // SKSE::log::info("Actor {} dead", actor->GetActorBase()->GetName()); 
         LootHandler::DropInventory(actor); 
 
         return Result::kContinue; 

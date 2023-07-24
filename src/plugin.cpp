@@ -22,11 +22,12 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 	case SKSE::MessagingInterface::kPreLoadGame:
 		break;
 	case SKSE::MessagingInterface::kPostLoadGame:
+		SKSE::log::info("Tick count {}", BGSSaveLoadManager::GetSingleton()->tickCount);
 		LootSpillage::Settings::Load(); 
 		LootSpillage::LootShaders::Configure(); 
         break;
 	case SKSE::MessagingInterface::kNewGame:
-		
+		LootSpillage::Settings::Load(); 
 		LootSpillage::LootShaders::Configure(); 
 		break;
 	}

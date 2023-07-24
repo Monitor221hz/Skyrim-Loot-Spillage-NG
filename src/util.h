@@ -11,6 +11,10 @@
 
 using namespace RE;
 
+
+[[nodiscard]] inline RE::hkVector4 NiPointToHkVector(const RE::NiPoint3& pt) { return { pt.x, pt.y, pt.z, 0 }; };
+
+
 namespace PointerUtil //yoinked po3's code
 {
 template <class T, class U>
@@ -305,35 +309,7 @@ namespace ObjectUtil
     };
 }
 
-namespace PerkUtil {
-    struct EntryVisitor : public RE::PerkEntryVisitor {
-    public:
-        explicit EntryVisitor(RE::Actor* a_actor) {
-            actor_ = a_actor;
-            result_ = 0;
-        }
 
-        ReturnType Visit(RE::BGSPerkEntry* perk_entry) override {
-            const auto* entry_point = static_cast<RE::BGSEntryPointPerkEntry*>(perk_entry);
-            // const auto* perk = entry_point->perk;
-            
-            if (entry_point->functionData &&
-                entry_point->entryData.function == RE::BGSEntryPointPerkEntry::EntryData::Function::kMultiplyValue) {
-                const RE::BGSEntryPointFunctionDataOneValue* value =
-                    static_cast<RE::BGSEntryPointFunctionDataOneValue*>(entry_point->functionData);
-                result_ = value->data;
-            }
-
-            return ReturnType::kContinue;
-        }
-
-        [[nodiscard]] float get_result() const { return result_; }
-
-    private:
-        RE::Actor* actor_;
-        float result_;
-    };
-}
 
 namespace AnimUtil
 {
@@ -390,16 +366,23 @@ namespace FormUtil
             return RE::TESForm::LookupByID(id);
             }
 
+            static RE::TESForm *GetFormFromMod(std::string modname, std::string formIDString)
+            {
+                if (formIDString.length() == 0) return nullptr; 
 
-    };
-    struct Reference
-    {
-        public: 
-        static ObjectRefHandle PlaceAtReference(TESObjectREFR* refr, TESBoundObject* boundObject, bool forcePersist)
-        {
-            return TESDataHandler::GetSingleton()->CreateReferenceAtLocation(boundObject, refr->GetPosition(), refr->GetAngle(), refr->GetParentCell(), refr->GetWorldspace(), nullptr, nullptr, ObjectRefHandle(),forcePersist,true); 
-        }
+                uint32_t formID = std::stoi(formIDString, 0, 16); 
+                return GetFormFromMod(modname,formID); 
+            } 
 
+            static RE::TESForm *GetFormFromConfigString(std::string str, std::string_view delimiter)
+            {
+                std::vector<std::string> splitData = Util::String::Split(str, delimiter); 
+                return GetFormFromMod(splitData[0], splitData[1]);
+            }
+            static RE::TESForm *GetFormFromConfigString(std::string str)
+            {
+                return GetFormFromConfigString(str, "~"sv); 
+            }
     };
 }
 namespace NifUtil
