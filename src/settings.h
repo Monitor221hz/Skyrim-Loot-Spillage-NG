@@ -23,6 +23,15 @@ namespace LootSpillage
 
             bool DropOther = false; 
 
+            bool DropUnplayable = false; 
+
+            bool AutoLootGold = false; 
+        };
+
+        struct ActorTargets
+        {
+            bool IncludeCreatures = false; 
+
         };
 
         struct Shaders
@@ -61,6 +70,10 @@ namespace LootSpillage
             DropOptions.DropArmor = ini.GetBoolValue("Drops", "DropArmor", false); 
             DropOptions.DropWeapons  = ini.GetBoolValue("Drops", "DropWeapons", false);  
             DropOptions.DropOther = ini.GetBoolValue("Drops", "DropOther", false);
+            DropOptions.DropUnplayable = ini.GetBoolValue("Drops", "DropUnplayable", false); 
+            // DropOptions.AutoLootGold = ini.GetBoolValue("Drops", "AutoLootGold", true);
+
+            ActorOptions.IncludeCreatures = ini.GetBoolValue("Actors", "CreatureDrops", false);  
 
             ShaderOptions.Duration = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxDuration", 60.0)); 
             ShaderOptions.FallOff = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxFallOff", 1.0)); 
@@ -82,7 +95,13 @@ namespace LootSpillage
 
         [[nodiscard]] static bool ShouldDropWeapons() { return DropOptions.DropWeapons; }
 
+        [[nodiscard]] static bool ShouldDropUnplayable() { return DropOptions.DropUnplayable; }
+
         [[nodiscard]] static bool ShouldDropOther() { return DropOptions.DropOther; }
+
+        [[nodiscard]] static bool ShouldLootGold() { return DropOptions.AutoLootGold; }
+
+        [[nodiscard]] static bool IncludeCreatures() { return ActorOptions.IncludeCreatures; }
 
         [[nodiscard]] static float GetShaderDuration() { return ShaderOptions.Duration; }
 
@@ -102,6 +121,7 @@ namespace LootSpillage
 
         static inline DroppedLoot DropOptions; 
         static inline Shaders ShaderOptions; 
+        static inline ActorTargets ActorOptions; 
 // BaseColor = 0xffffff
 
 // ArmorColor = 0x7602fa

@@ -14,6 +14,11 @@ namespace LootSpillage
 
         static void DropInventory(Actor* actor); 
 
+        static void LoadReferences()
+        {
+            CreatureFaction = TESForm::LookupByID(0x13)->As<TESFaction>(); 
+        }
+
         private:
 
         static bool CanDrop(TESBoundObject* loot); 
@@ -21,7 +26,7 @@ namespace LootSpillage
         static void DropLoot(Actor *actor, TESBoundObject *loot, const std::pair<int32_t, std::unique_ptr<InventoryEntryData>> &inventoryData);
 
         
-
+        static inline TESFaction* CreatureFaction; 
          
 
         

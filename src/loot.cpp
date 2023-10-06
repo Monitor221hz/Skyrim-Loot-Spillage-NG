@@ -13,6 +13,7 @@ namespace LootSpillage
         
 
         if (actor->IsPlayerRef()) return;
+        if (CreatureFaction && !Settings::IncludeCreatures() && actor->GetFactionRank(CreatureFaction, false) > -1) return;
         InventoryItemMap inventory = actor->GetInventory(); 
         NiPoint3 position = actor->GetPosition(); 
         NiPoint3 angle = actor->GetAngle(); 
@@ -29,6 +30,9 @@ namespace LootSpillage
     bool LootHandler::CanDrop(TESBoundObject *loot)
     {
         if (Settings::ShouldDropAll()) return true; 
+
+        std::string Name = loot->GetName(); 
+        if (!Settings::ShouldDropUnplayable() && (!loot->GetPlayable() || Name.empty() ) ) return false;
         switch(loot->GetFormType())
         {
             case FormType::Weapon:
@@ -66,9 +70,9 @@ namespace LootSpillage
         position.x += offsetX; 
         position.y += offsetY;
         position.z += actor->GetHeight() / 2.0f; 
-        
-        auto handle = actor->RemoveItem(loot, inventoryData.first, ITEM_REMOVE_REASON::kDropping, nullptr, actor, &position, &angle);
 
+        auto handle = actor->RemoveItem(loot, inventoryData.first, ITEM_REMOVE_REASON::kDropping, nullptr, actor, &position, &angle);
+        
         std::vector<ObjectRefHandle> arr; 
         arr.emplace_back(handle); 
 

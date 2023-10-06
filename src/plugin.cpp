@@ -16,6 +16,7 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
 		LootSpillage::Settings::Load(); 
 		LootSpillage::LootShaders::Load(); 
 		LootSpillage::LootShaders::Configure(); 
+		LootSpillage::LootHandler::LoadReferences();
 		break;
 	case SKSE::MessagingInterface::kPostLoad:
 		break;
