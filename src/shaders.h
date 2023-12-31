@@ -24,27 +24,10 @@ namespace LootSpillage
         static void Configure(); 
 
 
-        static void AddLootReference(TESObjectREFR* refr)
-        {
-            WriteLocker locker(dataLock); 
 
-            activeReferences.emplace(refr); 
-        }
-        static void ApplyDelayedShader(TESObjectREFR* refr); 
+        static void ApplyDelayedShader(FormID a_formID); 
 
-        static bool IsLootReference(TESObjectREFR* refr)
-        {
-            ReadLocker rLocker(dataLock); 
-            
-            bool isLoot = activeReferences.contains(refr); 
-            if (isLoot)
-            {
-                rLocker.unlock();
-                WriteLocker wLocker(dataLock); 
-                activeReferences.erase(refr); 
-            }
-            return isLoot; 
-        }
+
 
 
         private: 
@@ -73,6 +56,8 @@ namespace LootSpillage
 
         static inline float Duration; 
 
-        static inline std::unordered_set<TESObjectREFR*> activeReferences; 
+        static inline float Delay;
+
+
     };
 }

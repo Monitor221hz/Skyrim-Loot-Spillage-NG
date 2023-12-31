@@ -15,16 +15,16 @@ namespace LootSpillage
     void LootShaders::QueueLootShader(TESObjectREFR *refr)
     {
 
-        std::jthread wait(ApplyDelayedShader, refr); 
+        std::jthread wait(ApplyDelayedShader, refr->GetFormID()); 
         wait.detach(); 
     }
     void LootShaders::ApplyLootShader(TESObjectREFR *refr)
     {
         
 
-        if (!refr) return; 
-        
-        // if (!refr->Is3DLoaded()) return;
+        if (!refr || !refr->Is3DLoaded()) return; 
+
+
         ReadLocker locker(dataLock); 
         auto* baseObject = refr->GetBaseObject(); 
         
@@ -56,7 +56,7 @@ namespace LootSpillage
        
          
         // shader = WeaponShader; 
-        auto* effect = refr->ApplyEffectShader(shader, Duration, nullptr, false, false);
+        refr->ApplyEffectShader(shader, Duration, nullptr, false, false);
     //    SKSE::log::info("Shader applied to object {} of type {} | Edge Color {}", baseObject->GetName(), baseObject->GetFormType(), shader->data.edgeColor.ToHex());  
         
     }
@@ -65,6 +65,7 @@ namespace LootSpillage
         WriteLocker locker(dataLock); 
         float fallOff = Settings::GetShaderFallOff(); 
         Duration = Settings::GetShaderDuration(); 
+        Delay = Settings::GetShaderDelay();
 
         // BaseShader->data.edgeEffectFallOff = fallOff; 
         // WeaponShader->data.edgeEffectFallOff = fallOff; 
@@ -85,11 +86,17 @@ namespace LootSpillage
         // ConsumableShader->data.edgeColor = Settings::GetConsumableShaderColor(); 
         // ArmorShader->data.edgeColor = Settings::GetArmorShaderColor(); 
     }
-    void LootShaders::ApplyDelayedShader(TESObjectREFR *refr)
+    void LootShaders::ApplyDelayedShader(FormID a_formID)
     {
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
+        auto* refr = TESForm::LookupByID<TESObjectREFR>(a_formID);
+        if (!refr) 
+        { 
+            return; 
+        }
+        
         ApplyLootShader(refr); 
     }
     void LootShaders::ConfigureShader(TESEffectShader *shader, Color color, float fallOff)

@@ -81,9 +81,8 @@ namespace LootSpillage
         //artobj  = 0xaa01
         
         // auto *obj = FormUtil::Form::GetFormFromMod("LootSpillage.esp", 0x5900)->As<BGSHazard>();
-        SKSE::log::info("Dropping item {} with count {} from actor {}", loot->GetName(), inventoryData.first, actor->GetActorBase()->GetName());
-        auto* refr = handle.get().get(); 
-        LootShaders::AddLootReference(refr); 
+        
+        auto* refr = handle.get().get();  
         // FormUtil::Reference::PlaceAtReference(refr, obj, false);
         LootShaders::QueueLootShader(refr);
 

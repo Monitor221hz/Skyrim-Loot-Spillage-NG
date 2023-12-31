@@ -38,6 +38,7 @@ namespace LootSpillage
         {
             float Duration = 60.0f; 
             float FallOff = 1.0f; 
+            float ApplyDelay = 300.0f;
 
             uint32_t BaseColor = 0xffffff;
             uint32_t WeaponColor = 0xfa6502; 
@@ -77,6 +78,7 @@ namespace LootSpillage
 
             ShaderOptions.Duration = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxDuration", 60.0)); 
             ShaderOptions.FallOff = static_cast<float>(ini.GetDoubleValue("Shaders", "VfxFallOff", 1.0)); 
+            ShaderOptions.ApplyDelay = static_cast<float>(ini.GetDoubleValue("Shaders", "ApplyDelay", 300.0f));
             
             // ShaderOptions.BaseColor = ini.GetLongValue("Shaders", "BaseColor", 0xffffff);
             // ShaderOptions.ArmorColor = ini.GetLongValue("Shaders", "ArmorColor", 0x02e5fa);
@@ -104,6 +106,8 @@ namespace LootSpillage
         [[nodiscard]] static bool IncludeCreatures() { return ActorOptions.IncludeCreatures; }
 
         [[nodiscard]] static float GetShaderDuration() { return ShaderOptions.Duration; }
+
+        [[nodiscard]] static float GetShaderDelay() { return ShaderOptions.ApplyDelay; }
 
         [[nodiscard]] static float GetShaderFallOff() { return ShaderOptions.FallOff; }
 
